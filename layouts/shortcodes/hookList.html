@@ -1,0 +1,36 @@
+{{ $dir := path.Dir $.Page.File }}
+{{ $path := printf "%s%s" "content/" $dir }}
+
+<table>
+	<thead>
+		<tr>
+			<th>
+				Hook name
+			</th>
+			<th>
+				Types
+			</th>
+			<th>
+				Hook type
+			</th>
+			<th>
+				Located in
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{ range os.ReadDir $path }}
+		<tr>
+			{{ $file := printf "%s%s%s" $path "/" .Name }}
+			{{ with site.GetPage $file }}
+				<td>
+					<a href="{{ .RelPermalink }}">{{.Title}}</a>
+				</td>
+				<td>{{.Param "types"}}</td>
+				<td>{{.Param "hookTypes"}}</td>
+				<td>{{.Param "files"}}</td>
+			{{end}}
+		</tr>
+		{{ end }}
+	</tbody>
+</table>
