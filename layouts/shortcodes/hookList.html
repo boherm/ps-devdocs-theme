@@ -1,19 +1,21 @@
 <table>
 	<thead>
 		<tr>
-			<th>Hook name</th>
+			<th>Name</th>
+            <th>Title</th>
 			<th>Types</th>
-			<th>Hook type</th>
-			<th>Located in</th>
+			<th>Locations</th>
+			<th style="display:none">Located in</th>
 		</tr>
 	</thead>
-	<tbody>
+	<tbody id="hooks">
 		{{ range $.Page.Pages }}
 		<tr>
             <td><a href="{{ .RelPermalink }}">{{.Title}}</a></td>
+            <td>{{.Param "hookTitle"}}</td>
             <td>{{.Param "types"}}</td>
-            <td>{{.Param "hookTypes"}}</td>
-            <td>{{.Param "files"}}</td>
+            <td>{{.Param "locations"}}</td>
+            <th style="display:none">{{.Param "files"}}</td>
 		</tr>
 		{{ end }}
 	</tbody>

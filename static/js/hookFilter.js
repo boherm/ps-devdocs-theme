@@ -1,5 +1,5 @@
 $(function() {
-  const allItems = $('#hookList ul li');
+  const allItems = $('#hooks tr');
 
   const escapeRegExp = function(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -22,12 +22,9 @@ $(function() {
 
     allItems.each(function() {
       const $item = $(this);
-      const $sibling = $item.next('li');
       const text = $item.text();
       const matchesSearch = Boolean(text.match(regex));
       $item.toggle(matchesSearch);
-      $sibling.toggle(matchesSearch);
-
       if (matchesSearch) {
         count += 1;
       }
