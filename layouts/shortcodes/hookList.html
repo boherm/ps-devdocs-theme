@@ -2,9 +2,8 @@
     <thead>
         <tr>
             <th>Name</th>
-            <th>Title</th>
-            <th>Types</th>
             <th>Locations</th>
+            <th style="display:none">Title</th>
             <th style="display:none">Located in</th>
         </tr>
     </thead>
@@ -12,9 +11,17 @@
         {{ range $.Page.Pages }}
         <tr>
             <td><a href="{{ .RelPermalink }}">{{.Title}}</a></td>
-            <td>{{.Param "hookTitle"}}</td>
-            <td>{{.Param "types"}}</td>
-            <td>{{.Param "locations"}}</td>
+            <td>
+                {{ range .Param "locations" }}
+                    {{ if eq "backoffice" . }}
+                        <div class="pill-bo">BO</div>
+                    {{ end }}
+                    {{ if eq "frontoffice" . }}
+                        <div class="pill-fo">FO</div>
+                    {{ end }}
+                {{ end }}
+            </td>
+            <td style="display:none">{{.Param "hookTitle"}}</td>
             <td style="display:none">{{.Param "files"}}</td>
         </tr>
         {{ end }}
