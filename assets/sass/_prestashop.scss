@@ -170,3 +170,17 @@ a[data-featherlight] {
     }
   }
 }
+
+h1 {
+  word-break: break-word; 
+}
+
+.pill-bo {
+    @extend .version-pill;
+    background-color: #FF8787;
+}
+
+.pill-fo {
+    @extend .version-pill;
+    background-color: #B1AFFF;
+}
