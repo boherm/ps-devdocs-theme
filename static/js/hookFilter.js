@@ -26,9 +26,6 @@ $(function() {
         we replace the dynamic parts of the hookname with a regex pattern. 
     */
     const matchSearchWithDynamicHookName = function(search, hookName){
-        if(hookName == "actionAdmin<Action>After"){
-            console.log(hookName);
-        }
         const regex = new RegExp("\<(.*)\>", 'i');
         const regexedHookName = hookName.replace(regex, "(.*)");
         if(regexedHookName != hookName){
