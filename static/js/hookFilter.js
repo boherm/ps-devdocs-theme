@@ -1,5 +1,5 @@
 $(function() {
-    // '#hooks tr' to be removed when 1.7 doc is deleted
+    // '#hooks dl dt' to be removed when 1.7 doc is deleted
     const allItems = $('#hooks tr, #hookFilter ~ dl dt');
 
     const escapeRegExp = function(string) {
@@ -26,6 +26,9 @@ $(function() {
         we replace the dynamic parts of the hookname with a regex pattern. 
     */
     const matchSearchWithDynamicHookName = function(search, hookName){
+        if(hookName == "actionAdmin<Action>After"){
+            console.log(hookName);
+        }
         const regex = new RegExp("\<(.*)\>", 'i');
         const regexedHookName = hookName.replace(regex, "(.*)");
         if(regexedHookName != hookName){
@@ -41,8 +44,10 @@ $(function() {
         
         allItems.each(function() {
             const $item = $(this);
+            // text is the hookname on 1.7, and all of the table row content on 8 (with location, type, ...)
             const text = $item.text();
-            const hookName = $item.find('a.hookTitle').text();
+            // we need to detect if we are on the 1.7 or 8 hook list - to be removed when 1.7 doc is deleted
+            const hookName = $item.find('a.hookTitle').length > 0 ? $item.find('a.hookTitle').text() : text;
             const matchesSearch = Boolean(matchSearchWithDynamicHookName(search, hookName) || text.match(regex));
             $item.toggle(matchesSearch);
 
