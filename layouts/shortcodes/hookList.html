@@ -10,7 +10,7 @@
     <tbody id="hooks">
         {{ range $.Page.Pages }}
         <tr>
-            <td><a href="{{ .RelPermalink }}">{{.Title}}</a></td>
+            <td><a href="{{ .RelPermalink }}" class="hookTitle">{{.Title}}</a></td>
             <td>
                 {{ range .Param "locations" }}
                     {{ if eq "backoffice" . }}
