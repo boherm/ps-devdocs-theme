@@ -12,11 +12,11 @@
         <tr>
             <td><a href="{{ .RelPermalink }}" class="hookTitle">{{.Title}}</a></td>
             <td>
-                {{ range .Param "locations" }}
-                    {{ if eq "backoffice" . }}
+                {{ range .Param "location" }}
+                    {{ if eq "back office" . }}
                         <div class="pill-bo">BO</div>
                     {{ end }}
-                    {{ if eq "frontoffice" . }}
+                    {{ if eq "front office" . }}
                         <div class="pill-fo">FO</div>
                     {{ end }}
                 {{ end }}
