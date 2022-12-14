@@ -1,8 +1,31 @@
 {{ if .GitInfo }}
-<div>
-  Last updated on {{ .Lastmod.Format "January 2, 2006" }}
-  {{ with .GitInfo }}:
-  <a href="{{ $.Site.Params.ghCommitURL }}{{ .Hash }}">"{{ .Subject }}" ({{ .AbbreviatedHash }})</a>
-  {{ end }}
-</div>
+    <div>
+        Last updated on {{ .Lastmod.Format "January 2, 2006" }}
+        {{ with .GitInfo }}:
+            <a href="{{ $.Site.Params.ghCommitURL }}{{ .Hash }}">"{{ .Subject }}" ({{ .AbbreviatedHash }})</a>
+        {{ end }}
+    </div>
+{{ else }}
+    {{/* 
+        Hugo does not handle git submodules properly for GitInfo.
+        https://github.com/gohugoio/hugo/issues/5533
+        As a very inefective workaround, we parse the Github API to get the last commit of the Page
+    */}}
+
+    {{ $file := substr .File.Path 2 }}
+    {{ $branch := "8.x" }}
+    
+    {{ if eq (substr .File.Path 0 4) "1.7/" }}
+        {{ $file = substr .File.Path 4 }}
+        {{ $branch = "1.7.x" }}
+    {{ end }}
+    
+    {{ $githubApiUrl := printf "%s?path=%s&sha=%s&page=1&per_page=1" .Site.Params.ghApiCommitURL $file $branch }}
+    {{ $githubFileUrl := printf "%sblob/%s/%s" .Site.Params.ghRepoUrl $branch $file }}
+
+    {{ range getJSON $githubApiUrl }}
+        <a href="{{ $githubFileUrl }}">
+            Last updated on {{ .commit.author.date }} by {{ .commit.author.name }}
+        </a>
+    {{ end }}
 {{ end }}
