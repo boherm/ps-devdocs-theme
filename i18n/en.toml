@@ -24,3 +24,6 @@ other = "More"
 
 [Expand-title]
 other = "Expand me..."
+
+[Seen-Mistake-Improve]
+other = "Seen a mistake? want to improve the documentation?"
