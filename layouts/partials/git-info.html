@@ -1,8 +1,62 @@
-{{ if .GitInfo }}
-<div>
-  Last updated on {{ .Lastmod.Format "January 2, 2006" }}
-  {{ with .GitInfo }}:
-  <a href="{{ $.Site.Params.ghCommitURL }}{{ .Hash }}">"{{ .Subject }}" ({{ .AbbreviatedHash }})</a>
-  {{ end }}
-</div>
+{{ if not (strings.Contains .Site.BaseURL "localhost") }}
+    {{ if .GitInfo }}
+        <div>
+            Last updated on {{ .Lastmod.Format "January 2, 2006" }}
+            {{ with .GitInfo }}:
+                <a href="{{ $.Site.Params.ghCommitURL }}{{ .Hash }}">"{{ .Subject }}" ({{ .AbbreviatedHash }})</a>
+            {{ end }}
+        </div>
+    {{ else }}
+        {{/* 
+            Hugo does not handle git submodules properly for GitInfo.
+            https://github.com/gohugoio/hugo/issues/5533
+            As a very inefective workaround, we parse the Github API to get the last commit of the Page
+        */}}
+        
+        {{ if and (or .IsPage .IsSection) .Site.Params.editURL }}
+            {{- $ghPath := replace .File.Dir "\\" "/" }}
+            {{ if and
+                .Site.Params.versions.current
+                .FirstSection.Params.versionGithubPath
+            }}
+                {{- $pagePathParts := (split (replace .File.Dir "\\" "/") "/") }}
+                {{- $basePath := delimit (after 1 $pagePathParts) "/" }}
+                {{- $ghPath = printf "%s/%s" .FirstSection.Params.versionGithubpath $basePath }}
+                 
+                {{ $githubApiUrl := printf 
+                    "%s?path=%s&sha=%s&page=1&per_page=1" 
+                    .Site.Params.ghApiCommitURL $basePath 
+                    .FirstSection.Params.versionGithubpath 
+                }}
+                
+                <div class="git-info">
+                    {{ $bearer := printf "BEARER %s" (getenv "DEVDOCS_GITHUB_READ_TOKEN") }}
+                    {{ range getJSON $githubApiUrl (dict "Authorization" $bearer) }}
+                        <a href="{{ .html_url }}">
+                            Last updated on {{ .commit.author.date }} by {{ .commit.author.name }}
+                        </a>
+                    {{ end }}
+
+                    <br>{{T "Seen-Mistake-Improve"}}
+
+                    <a class="github-link" 
+                        title='{{T "Improve-this-page"}}' 
+                        href="{{ .Site.Params.editURL }}{{ $ghPath }}{{ .File.LogicalName }}" 
+                        target="blank"
+                    >
+                        <i class="fa fa-pencil"></i>
+                        <span id="top-github-link-text">
+                            {{T "Improve-this-page"}}
+                        </span>
+                    </a>
+                    <a class="how-to-improve" href="{{ .Site.Params.howToContributeURL }}">
+                        <i class="fa fa-question-circle"></i>
+                        <span>
+                            Learn how to contribute
+                        </span>
+                    </a>
+                </div>
+            {{ end }}
+        {{ end }}
+    {{ end }}
 {{ end }}
