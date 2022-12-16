@@ -12,7 +12,7 @@
         <tr>
             <td><a href="{{ .RelPermalink }}" class="hookTitle">{{.Title}}</a></td>
             <td>
-                {{ range .Param "location" }}
+                {{ range .Param "locations" }}
                     {{ if eq "back office" . }}
                         <div class="pill-bo">BO</div>
                     {{ end }}
