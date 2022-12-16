@@ -3,6 +3,7 @@
         <tr>
             <th>Name</th>
             <th>Locations</th>
+            <th>Has example</th>
             <th style="display:none">Title</th>
             <th style="display:none">Located in</th>
         </tr>
@@ -19,6 +20,11 @@
                     {{ if eq "front office" . }}
                         <div class="pill-fo">FO</div>
                     {{ end }}
+                {{ end }}
+            </td>
+            <td>
+                {{ if .Param "hasExample" }}
+                    ✅
                 {{ end }}
             </td>
             <td style="display:none">{{.Param "hookTitle"}}</td>
