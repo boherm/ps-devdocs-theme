@@ -1,2 +1,2 @@
-{{ $anchor := replace .Anchor "-hahahugoshortcode-s0-hbhb" ""  }}
+{{ $anchor := replaceRE "-hahahugoshortcode-s(.*)-hbhb" "" .Anchor  }}
 <h{{ .Level }} id="{{ $anchor | safeURL }}">{{ .Text | safeHTML }}<a href="#{{ $anchor | safeHTML }}"></a></h{{ .Level }}>
