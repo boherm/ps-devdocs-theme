@@ -1,7 +1,9 @@
 <div id="toc">
   <div class="wrapper">
     <div id="toc-title">Table of Contents</div>
-    {{ .TableOfContents }}
+    {{ $toc := replace .TableOfContents "HAHAHUGOSHORTCODE-s0-HBHB" "" }}
+    {{ $toc := replace $toc "-hahahugoshortcode-s0-hbhb" "" }}
+    {{ $toc | safeHTML }}
 
     {{ partial "page-nav.html" . }}
   </div>
