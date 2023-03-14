@@ -6,6 +6,18 @@
 {{ if  .Site.Params.docSearch }}
     <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3.2.1"></script>
     <script type="text/javascript">
+
+        const hookReferential = [
+            {{ with .Site.GetPage "/8/modules/concepts/hooks/list-of-hooks" }}
+                {{ range .Page.Pages }}
+                    {
+                        name: "{{.Title}}",
+                        url: {{.RelPermalink}}
+                    },
+                {{ end }}
+            {{ end }}
+        ];
+
         docsearch({
             appId: '{{ .Site.Params.docSearch.appId }}',
             apiKey: '{{ .Site.Params.docSearch.apiKey }}',
@@ -89,22 +101,8 @@
             return false;
         }
 
-        const escapeRege = function(string) {
-            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        };
-
         function matchHooks(query){
-            const hookReferential = [{{ with .Site.GetPage "/8/modules/concepts/hooks/list-of-hooks" }}
-                {{ range .Page.Pages }}
-                    {
-                        name: "{{.Title}}",
-                        url: {{.RelPermalink}}
-                    },
-                {{ end }}
-            {{ end }}];
-
             let hookPages = [];
-            const regex = new RegExp(escapeRege(query), 'i');
             hookReferential.forEach(element => { 
                 const matchesSearch = Boolean(matchQueryWithDynamicHookName(query, element.name));
                 if(matchesSearch){
