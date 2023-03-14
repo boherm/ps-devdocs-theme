@@ -45,11 +45,8 @@
                     Promise.resolve(func.apply(that, args)).then(resolve).catch(reject);
                     
                     const input = document.getElementById("docsearch-input");
-                    let dropdownContainer = document.getElementsByClassName("DocSearch-Dropdown-Container")[0];
-                    if(!dropdownContainer){
-                        dropdownContainer = document.getElementsByClassName("DocSearch-Dropdown")[0];
-                    }
-
+                    let dropdownContainer = document.getElementsByClassName("DocSearch-Dropdown")[0];
+                    
                     const hookResults = matchHooks(input.value);
 
                     const elements = document.getElementsByClassName("DocSearchGenericHooks");
@@ -102,6 +99,10 @@
         }
 
         function matchHooks(query){
+            if(query.substring(0, 4).toLowerCase() == "hook"){
+                query = query.substring(4);
+            }
+
             let hookPages = [];
             hookReferential.forEach(element => { 
                 const matchesSearch = Boolean(matchQueryWithDynamicHookName(query, element.name));
