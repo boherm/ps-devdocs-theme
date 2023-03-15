@@ -8,7 +8,7 @@
     <script type="text/javascript">
 
         const hookReferential = [
-            {{ with .Site.GetPage "/8/modules/concepts/hooks/list-of-hooks" }}
+            {{ with .Site.GetPage $.Site.Params.hookListURL }}
                 {{ range .Page.Pages }}
                     {
                         name: "{{.Title}}",
