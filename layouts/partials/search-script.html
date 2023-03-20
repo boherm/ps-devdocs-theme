@@ -3,12 +3,14 @@
    * or to the default version (if we are ouside of a version, e.g. the homepage)
    */}}
 {{ $currentSection := .FirstSection.Params.versionId | default .Site.Params.versions.current }}
+{{ $currentHookList := .FirstSection.Params.hookListURL | default .Site.Params.hookListURL }}
+
 {{ if  .Site.Params.docSearch }}
     <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3.2.1"></script>
     <script type="text/javascript">
 
         const hookReferential = [
-            {{ with .Site.GetPage $.Site.Params.hookListURL }}
+            {{ with .Site.GetPage $currentHookList }}
                 {{ range .Page.Pages }}
                     {
                         name: "{{.Title}}",
