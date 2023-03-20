@@ -3,28 +3,125 @@
    * or to the default version (if we are ouside of a version, e.g. the homepage)
    */}}
 {{ $currentSection := .FirstSection.Params.versionId | default .Site.Params.versions.current }}
+{{ $currentHookList := .FirstSection.Params.hookListURL | default .Site.Params.hookListURL }}
+
 {{ if  .Site.Params.docSearch }}
-  <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3.2.1"></script>
-  <script type="text/javascript">
-    docsearch({
-      appId: '{{ .Site.Params.docSearch.appId }}',
-      apiKey: '{{ .Site.Params.docSearch.apiKey }}',
-      indexName: '{{ .Site.Params.docSearch.indexName }}',
-      placeholder: 'Search DevDocs',
-      searchParameters: {
-        facetFilters: [
-          'version:{{ $currentSection }}'
-        ],
-      },
-      container: '#docsearch-container',
-    });
-  </script>
+    <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3.2.1"></script>
+    <script type="text/javascript">
+
+        const hookReferential = [
+            {{ with .Site.GetPage $currentHookList }}
+                {{ range .Page.Pages }}
+                    {
+                        name: "{{.Title}}",
+                        url: {{.RelPermalink}}
+                    },
+                {{ end }}
+            {{ end }}
+        ];
+
+        docsearch({
+            appId: '{{ .Site.Params.docSearch.appId }}',
+            apiKey: '{{ .Site.Params.docSearch.apiKey }}',
+            indexName: '{{ .Site.Params.docSearch.indexName }}',
+            placeholder: 'Search DevDocs',
+            searchParameters: {
+                facetFilters: [
+                'version:{{ $currentSection }}'
+                ],
+            },
+            container: '#docsearch-container',
+            transformSearchClient: function(searchClient){
+                return {
+                    ...searchClient,
+                    search: alterSearch(searchClient.search)
+                };
+            }
+        });
+
+        function alterSearch(func) {
+            return function (...args) {
+                const that = this;
+                return new Promise((resolve, reject) => {
+                    
+                    Promise.resolve(func.apply(that, args)).then(resolve).catch(reject);
+                    
+                    const input = document.getElementById("docsearch-input");
+                    let dropdownContainer = document.getElementsByClassName("DocSearch-Dropdown")[0];
+                    
+                    const hookResults = matchHooks(input.value);
+
+                    const elements = document.getElementsByClassName("DocSearchGenericHooks");
+                    while(elements.length > 0){
+                        elements[0].parentNode.removeChild(elements[0]);
+                    }
+
+                    let appendHtml = "";
+                    hookResults.forEach(element => {
+                        appendHtml += `
+                            <li class="DocSearch-Hit" id="docsearch-item-0" role="option" aria-selected="false">
+                                <a href="` + element.url +  `">
+                                    <div class="DocSearch-Hit-Container">
+                                        <div class="DocSearch-Hit-icon">
+                                        </div>
+                                        <div class="DocSearch-Hit-content-wrapper">
+                                            <span class="DocSearch-Hit-title">
+                                            ` + element.name.replace(/>/g, "&gt;").replace(/</g, "&lt;") +  `
+                                            </span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>`;
+                    });
+
+                    if(hookResults.length>0){
+                        dropdownContainer.innerHTML = `<div class="DocSearchGenericHooks">
+                            <section class="DocSearch-Hits">
+                                <div class="DocSearch-Hit-source">Matching dynamic Hooks</div>
+                                    <ul role="listbox" aria-labelledby="docsearch-label" id="docsearch-list">
+                                        ` + appendHtml + `
+                                    </ul>
+                                </div>
+                            </section>
+                        </div>
+                        `;
+                    }
+                });
+            };
+        }
+
+        const matchQueryWithDynamicHookName = function(search, hookName){
+            const regex = new RegExp("\<(.*)\>", 'i');
+            const regexedHookName = hookName.replace(regex, "(.*)");
+            if(regexedHookName != hookName){
+                const hookRegex = new RegExp(regexedHookName, 'i');
+                return search.match(hookRegex);
+            }
+            return false;
+        }
+
+        function matchHooks(query){
+            if(query.substring(0, 4).toLowerCase() == "hook"){
+                query = query.substring(4);
+            }
+
+            let hookPages = [];
+            hookReferential.forEach(element => { 
+                const matchesSearch = Boolean(matchQueryWithDynamicHookName(query, element.name));
+                if(matchesSearch){
+                    hookPages.push(element);
+                }
+            });
+            return hookPages;
+        }
+
+    </script>
 {{ else }}
-  <script type="text/javascript">
-    var baseurl = "{{.Site.BaseURL}}";
-  </script>
-  {{ $assetBusting := not .Site.Params.disableAssetsBusting }}
-  <script src="{{"js/lunr.min.js" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}"></script>
-  <script src="{{"js/auto-complete.js" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}"></script>
-  <script src="{{"js/search.js" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}"></script>
+    <script type="text/javascript">
+        var baseurl = "{{.Site.BaseURL}}";
+    </script>
+    {{ $assetBusting := not .Site.Params.disableAssetsBusting }}
+    <script src="{{"js/lunr.min.js" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}"></script>
+    <script src="{{"js/auto-complete.js" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}"></script>
+    <script src="{{"js/search.js" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}"></script>
 {{ end }}
