@@ -172,6 +172,8 @@
   {{ if gt (len .Site.Home.Sections) 1 }}
     {{ $currentSection := .FirstSection.Params.versionId | default .Site.Params.versions.current }}
     {{ $currentPage := .File.Path }}
+    {{- $pagePathParts := (split $currentPage "/") }}
+    {{- $basePath := delimit (after 1 $pagePathParts) "/" }}
     <div class="version-selector-container">
       <div class="version-selector" aria-label="Documentation version">
         <div class="version-selector-current">
@@ -187,8 +189,6 @@
         <ul class="version-selector-dropdown">
           {{ range .Site.Home.Sections -}}
             <li>
-              {{- $pagePathParts := (split $currentPage "/") }}
-              {{- $basePath := delimit (after 1 $pagePathParts) "/" }}
               {{- $canonicalPath := printf "%s/%s" .Params.versionId $basePath }}
               {{- $canonicalPage := "" }}
               {{- with .Site.GetPage $canonicalPath -}}
