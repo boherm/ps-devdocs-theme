@@ -171,6 +171,7 @@
 {{ define "version-selector" }}
   {{ if gt (len .Site.Home.Sections) 1 }}
     {{ $currentSection := .FirstSection.Params.versionId | default .Site.Params.versions.current }}
+    {{ $currentPage := .File.Path }}
     <div class="version-selector-container">
       <div class="version-selector" aria-label="Documentation version">
         <div class="version-selector-current">
@@ -185,12 +186,28 @@
         </div>
         <ul class="version-selector-dropdown">
           {{ range .Site.Home.Sections -}}
-            <li><a href="{{ .RelPermalink }}">
-              {{ .Params.menuTitle | default .Title }}
-              {{ if .Params.versionMeta -}}
-                <span class="version-selector-meta">{{ .Params.versionMeta }}</span>
-              {{- end -}}
-            </a></li>
+            <li>
+              {{- $pagePathParts := (split $currentPage "/") }}
+              {{- $basePath := delimit (after 1 $pagePathParts) "/" }}
+              {{- $canonicalPath := printf "%s/%s" .Params.versionId $basePath }}
+              {{- $canonicalPage := "" }}
+              {{- with .Site.GetPage $canonicalPath -}}
+                  {{ $canonicalPage = . }}
+              {{- end }}
+              {{- $currentVersionPage := .Site.GetPage (printf "/%s" .Site.Params.versions.current) }}
+              
+              {{- if ne $canonicalPage "" }}
+                <a href="{{ $canonicalPage.RelPermalink }}">
+              {{- else }}
+                <a href="{{ .RelPermalink }}">
+              {{- end }}
+              
+                {{ .Params.menuTitle | default .Title }}
+                {{ if .Params.versionMeta -}}
+                  <span class="version-selector-meta">{{ .Params.versionMeta }}</span>
+                {{- end -}}
+              </a>
+            </li>
           {{- end }}
         </ul>
       </div>
