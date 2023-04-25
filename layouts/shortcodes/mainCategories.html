@@ -1,0 +1,57 @@
+{{ $currentSection := .Site.Params.versions.current }}
+
+<div class="mainCategories">
+{{ with .Site.GetPage $currentSection }}
+    {{ range .Page.Pages }}
+        {{ if .Param "featured" }}
+        <div class="mainCategory">
+            <h3>
+                <div class="indexCategory">
+                    {{ if .Param "icon" }}
+                        <i class="fa {{ .Param "icon" }}"></i>
+                    {{ else}}
+                        <i class="fa fa-star"></i>
+                    {{ end}}
+                </div>
+                {{ if .Param "menuTitle" }}
+                    <a href="{{ .RelPermalink }}">
+                        {{ .Param "menuTitle" }}
+                    </a>
+                {{ else }}
+                    <a href="{{ .RelPermalink }}">
+                        {{ .Title }}
+                    </a>
+                {{ end }}
+            </h3>
+            <ul>
+                {{ range .Page.Pages }}
+                    {{ if .Param "featured" }}
+                        <li>
+                            {{ if .Param "menuTitle" }}
+                                <a href="{{ .RelPermalink }}">
+                                    {{ .Param "menuTitle" }}
+                                </a>
+                            {{ else }}
+                                <a href="{{ .RelPermalink }}">
+                                    {{ .Title }}
+                                </a>
+                            {{ end }}
+                        </li>
+                    {{ end }}
+                {{ end }}
+            </ul>
+            <a href="{{ .RelPermalink }}" class="explore-all">
+                <i class="fa fa-arrow-right"></i> 
+                All 
+                {{ if .Param "menuTitle" }}
+                    {{ .Param "menuTitle" }} 
+                {{ else }}
+                    {{ .Title }} 
+                {{ end }}
+                topics
+            </a>
+        </div>
+        {{ end }}
+    {{ end }}
+{{ end }}
+</div>

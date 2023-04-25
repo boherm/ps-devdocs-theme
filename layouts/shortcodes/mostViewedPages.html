@@ -1,0 +1,14 @@
+{{ $currentSection := .Site.Params.versions.current }}
+
+<div class="mostViewedPagesIcon">
+    <i class="fa fa-star"></i>
+</div>
+<h3 class="mostViewedPagesHeading">
+    Most viewed pages
+</h3>
+
+<div class="mostViewedPages">
+    {{ with .Site.GetPage $currentSection }}
+        {{ partial "exploreMostViewedPages.html" . }}
+    {{ end }}
+</div>
