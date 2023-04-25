@@ -3,7 +3,7 @@
 <div class="mainCategories">
 {{ with .Site.GetPage $currentSection }}
     {{ range .Page.Pages }}
-        {{ if .Param "featured" }}
+        {{ if .Param "showOnHomepage" }}
         <div class="mainCategory">
             <h3>
                 <div class="indexCategory">
@@ -25,7 +25,7 @@
             </h3>
             <ul>
                 {{ range .Page.Pages }}
-                    {{ if .Param "featured" }}
+                    {{ if .Param "showOnHomepage" }}
                         <li>
                             {{ if .Param "menuTitle" }}
                                 <a href="{{ .RelPermalink }}">
