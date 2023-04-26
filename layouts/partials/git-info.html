@@ -8,57 +8,95 @@
         </div>
     {{ else }}
         {{ if .Site.Params.enableCustomGitInfo }}
-            {{/* 
-                Hugo does not handle git submodules properly for GitInfo.
-                https://github.com/gohugoio/hugo/issues/5533
-                As a very inefective workaround, we parse the Github API to get the last commit of the Page
-            */}}
             
-            {{ if and (or .IsPage .IsSection) .Site.Params.editURL }}
-                {{- $ghPath := replace .File.Dir "\\" "/" }}
-                {{ if and
-                    .Site.Params.versions.current
-                    .FirstSection.Params.versionGithubPath
-                }}
-                    {{- $pagePathParts := (split (replace .File.Dir "\\" "/") "/") }}
-                    {{- $basePath := delimit (after 1 $pagePathParts) "/" }}
-                    {{- $ghPath = printf "%s/%s" .FirstSection.Params.versionGithubpath $basePath }}
-                    
-                    {{ $githubApiUrl := printf 
-                        "%s?path=%s&sha=%s&page=1&per_page=1" 
-                        .Site.Params.ghApiCommitURL $basePath 
-                        .FirstSection.Params.versionGithubpath 
+            <h5 class="footerHeading">Help and support</h5>
+            <div class="improvedFooter">
+
+                {{ if and (or .IsPage .IsSection) .Site.Params.editURL }}
+                    {{- $ghPath := replace .File.Dir "\\" "/" }}
+                    {{ if and
+                        .Site.Params.versions.current
+                        .FirstSection.Params.versionGithubPath
                     }}
-                    
-                    <div class="git-info">
-                        {{ $bearer := printf "BEARER %s" (getenv "DEVDOCS_GITHUB_READ_TOKEN") }}
-                        {{ range getJSON $githubApiUrl (dict "Authorization" $bearer) }}
-                            <a href="{{ .html_url }}">
-                                Last updated on {{ .commit.author.date }} by {{ .commit.author.name }}
+                        {{- $pagePathParts := (split (replace .File.Dir "\\" "/") "/") }}
+                        {{- $basePath := delimit (after 1 $pagePathParts) "/" }}
+                        {{- $ghPath = printf "%s/%s" .FirstSection.Params.versionGithubpath $basePath }}
+
+                        <div class="gitInfo">
+
+                            <h6>Last update</h6>
+                            {{/* 
+                                Hugo does not handle git submodules properly for GitInfo.
+                                https://github.com/gohugoio/hugo/issues/5533
+                                As a very inefective workaround, we parse the Github API to get the last commit of the Page
+                            */}}
+                                    
+                            {{ $githubApiUrl := printf 
+                                "%s?path=%s&sha=%s&page=1&per_page=1" 
+                                .Site.Params.ghApiCommitURL $basePath 
+                                .FirstSection.Params.versionGithubpath 
+                            }}
+                                    
+                            {{ $bearer := printf "BEARER %s" (getenv "DEVDOCS_GITHUB_READ_TOKEN") }}
+                            {{ range getJSON $githubApiUrl (dict "Authorization" $bearer) }}
+                            <dl>
+                                <dt>On</dt>
+                                <dd><a href="{{ .html_url }}">{{ substr .commit.author.date 0 10 }}</a></dd>
+                                <dt>By</dt>
+                                <dd><a href="{{ .html_url }}">{{ .commit.author.name }}</a></dd>
+                            </dl>
+                            {{ end }}
+                               
+                            
+                        </div>
+
+                        <div class="contribute">
+                            <h6>Help us make these docs great!</h6>
+
+                            <p>
+                                All PrestaShop Developer Documentation are open source.  See something that's wrong or unclear? Submit a pull request.
+                            </p>
+
+                            <a class="github-link" 
+                                title='{{T "Improve-this-page"}}' 
+                                href="{{ .Site.Params.editURL }}{{ $ghPath }}{{ .File.LogicalName }}" 
+                                target="blank"
+                            >
+                                <i class="fa fa-github"></i>
+                                <span id="top-github-link-text">
+                                    {{T "Improve-this-page"}}
+                                </span>
                             </a>
-                        {{ end }}
 
-                        <br>{{T "Seen-Mistake-Improve"}}
+                            <br>
 
-                        <a class="github-link" 
-                            title='{{T "Improve-this-page"}}' 
-                            href="{{ .Site.Params.editURL }}{{ $ghPath }}{{ .File.LogicalName }}" 
-                            target="blank"
-                        >
-                            <i class="fa fa-pencil"></i>
-                            <span id="top-github-link-text">
-                                {{T "Improve-this-page"}}
-                            </span>
-                        </a>
-                        <a class="how-to-improve" href="{{ .Site.Params.howToContributeURL }}">
-                            <i class="fa fa-question-circle"></i>
-                            <span>
-                                Learn how to contribute
-                            </span>
-                        </a>
-                    </div>
+                            <a class="how-to-improve" href="{{ .Site.Params.howToContributeURL }}">
+                                <span>
+                                    Learn how to contribute
+                                </span>
+                            </a>
+                        </div>
+
+                        <div class="support">
+                            <h6>Still need help ?</h6>
+
+                            <a href="https://www.prestashop-project.org/slack/">
+                                <i class="fa fa-slack"></i> Join the PrestaShop Project’s Slack Chat
+                            </a>
+                            <a href="https://github.com/PrestaShop/PrestaShop/discussions">
+                                <i class="fa fa-github"></i> Join us on Github Discussions
+                            </a>                            
+                            <a href="https://www.prestashop.com/en/support">
+                                <i class="fa fa-question-circle"></i> Find support on Prestashop.com
+                            </a>
+                            <a href="https://build.prestashop-project.org/">
+                                <i class="fa fa-newspaper-o"></i> Discover our developer's blog
+                            </a>
+                        </div>
+
+                    {{ end }}
                 {{ end }}
-            {{ end }}
+            </div>
         {{ end }}
     {{ end }}
 {{ end }}

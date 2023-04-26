@@ -188,3 +188,132 @@ h1 {
     @extend .version-pill;
     background-color: #B1AFFF;
 }
+
+div.mainCategories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2%;
+
+  div.mainCategory {
+    flex-basis: 23%;
+
+    div.indexCategory {
+      color: #e693b9;
+      font-size: 36px;
+      margin-bottom: 15px;
+    }
+
+    h3 {
+      padding-bottom: 10px;
+      border-bottom: 3px solid #EEEEEE;
+    }
+
+    a {
+      color: #222222;
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0px;
+      min-height: 150px;
+    }
+
+    a.explore-all {
+      color: #e693b9;
+    }
+  }
+}
+
+div.mostViewedPagesIcon {
+  color: #e693b9;
+  font-size: 36px;
+  margin-top: 20px;
+}
+h3.mostViewedPagesHeading {
+  margin-top: 0px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #EEEEEE;
+}
+
+div.mostViewedPages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+
+  div.mostViewedPage {
+    flex-basis: 30%;
+    border : 1px solid #EEEEEE;
+    border-radius: 5px;
+    padding: 10px;
+
+    a {
+      color: #222222; 
+    }
+
+    &:hover {
+      background-color: #F8F8F8;
+    }
+  }
+}
+
+h5.footerHeading {
+  border-bottom: 2px solid #EEEEEE;
+  padding-bottom: 10px;
+}
+
+div.improvedFooter {
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom : 20px;
+
+  div.gitInfo {
+    flex-basis: 20%;
+    font-size: 14px;
+
+    dl {
+      dt {
+        font-weight: normal;
+        float : left;
+        margin-right : 10px;
+      }
+      dd {
+        margin-left: 0px;
+      }
+    }
+  }
+
+  div.contribute {
+    flex-basis: 35%;
+
+    a.github-link {
+      border: 1px solid #df0067;
+      padding : 15px 30px;
+      border-radius: 10px;
+      margin: 10px 0px;
+      color: #df0067;
+      font-size: 14px;
+      background-color: #FDFDFD;
+    }
+
+    a {
+      color: #df0067;
+      font-size: 14px;
+    }
+
+    p {
+      color: #666666;
+    }
+  }
+
+  div.support {
+    flex-basis: 35%;
+
+    a {
+      margin : 10px;
+      font-size: 14px;
+    }
+  }
+  
+}

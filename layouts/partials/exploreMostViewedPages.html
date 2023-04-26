@@ -1,0 +1,16 @@
+{{ if .Page.Param "mostViewedPage" }}
+    <div class="mostViewedPage">
+        {{ if .Page.Param "menuTitle" }}
+            <a href="{{ .Page.RelPermalink }}">
+                {{ .Page.Param "menuTitle" }}
+            </a>
+        {{ else }}
+            <a href="{{ .Page.RelPermalink }}">
+                {{ .Page.Title }}
+            </a>
+        {{ end }}
+    </div>
+{{ end }}
+{{ range .Page.Pages }}
+    {{ partial "exploreMostViewedPages.html" . }}
+{{ end }}
