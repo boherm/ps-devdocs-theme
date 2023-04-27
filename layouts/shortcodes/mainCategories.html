@@ -5,7 +5,8 @@
     {{ range .Page.Pages }}
         {{ if .Param "showOnHomepage" }}
         <div class="mainCategory">
-            <h3>
+            
+            <div class="mainCategoryHeading">
                 <div class="indexCategory">
                     {{ if .Param "icon" }}
                         <i class="fa {{ .Param "icon" }}"></i>
@@ -13,6 +14,7 @@
                         <i class="fa fa-star"></i>
                     {{ end}}
                 </div>
+
                 {{ if .Param "menuTitle" }}
                     <a href="{{ .RelPermalink }}">
                         {{ .Param "menuTitle" }}
@@ -22,7 +24,8 @@
                         {{ .Title }}
                     </a>
                 {{ end }}
-            </h3>
+            </div>
+
             <ul>
                 {{ range .Page.Pages }}
                     {{ if .Param "showOnHomepage" }}
