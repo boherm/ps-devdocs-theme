@@ -275,6 +275,10 @@ div.improvedFooter {
   div.contribute {
     flex-basis: 55%;
 
+    @media only screen and (max-width: 500px) {
+      flex-basis: 100%;
+    }
+
     a.github-link {
       border: 1px solid #df0067;
       padding : 15px 30px;
@@ -297,6 +301,10 @@ div.improvedFooter {
 
   div.support {
     flex-basis: 40%;
+
+    @media only screen and (max-width: 500px) {
+      flex-basis: 100%;
+    }
 
     a {
       margin : 10px;
