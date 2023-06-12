@@ -23,9 +23,9 @@
     <script src="{{ $built.RelPermalink }}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
     {{ if .Params.useMermaid -}}
     <!-- mermaid diagrams -->
-    <script src="{{"mermaid/mermaid.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
-    <script>
-        mermaid.initialize({ startOnLoad: true });
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ startOnLoad: true });
     </script>
     {{- end }}
     {{if not .Site.Params.disableSearch}}

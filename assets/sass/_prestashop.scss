@@ -313,3 +313,42 @@ div.improvedFooter {
   }
   
 }
+
+a.cta {
+  border: 1px solid #df0067;
+  padding : 15px 30px;
+  border-radius: 10px;
+  margin: 10px 0px;
+  color: #df0067;
+  font-size: 14px;
+  background-color: #FFFFFF;
+  width: 100%;
+  text-align: center;
+
+  &.cta-primary {
+    background-color: #df0067;
+    color: #FFFFFF;
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.h-version-titles th:not(:first-child) {
+  text-align: center;
+}
+
+.support-yes, .example-yes {
+  background-color: #8ce48c;
+  text-align: center;
+}
+.support-no, .example-no {
+  background-color: #e89b9b;
+}
+.example-yes, .example-no {
+  display: inline-block;
+  width: 1.1rem; 
+  height: 1.1rem;
+  margin-bottom: -2px;
+}
