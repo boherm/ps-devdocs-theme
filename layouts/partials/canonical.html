@@ -12,6 +12,6 @@
     {{- $basePath := delimit (after 1 $pagePathParts) "/" }}
     {{- $canonicalPath := printf "%s/%s" .Site.Params.versions.current $basePath }}
     {{- with .Site.GetPage $canonicalPath -}}
-        <link rel="canonical" href="{{ .Permalink }}">
+        <link rel="canonical" href="{{ .RelPermalink }}">
     {{- end }}
 {{- end -}}
