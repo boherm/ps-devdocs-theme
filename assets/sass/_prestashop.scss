@@ -358,7 +358,7 @@ a.cta {
     background-color: #a2e2ef;
     padding: 10px 0;
     position: relative;
-
+    display: flex;
     &:hover {
         background-color: #000;
         color: white;
@@ -374,14 +374,14 @@ a.cta {
     }
 
     .container {
-        @media (min-width:990px) and (max-width: 2500px) {
+        @media (min-width:1190px) and (max-width: 2500px) {
             width: 1170px;
         }
         display: flex;
         flex-direction: row;
         justify-content: space-between;
 
-        @media (max-width: 700px) {
+        @media (max-width: 1170px) {
             flex-direction: column;
             text-align: center;
         }
