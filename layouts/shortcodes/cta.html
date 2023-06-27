@@ -1,0 +1,5 @@
+{{- $relref := .Get "relref" }}
+{{- $url := relref . $relref }}
+<a href="{{ $url }}" target="_blank" class="cta {{ with .Get "type" }}cta-{{.}}{{end}}"> 
+    {{ .Inner }}
+</a>

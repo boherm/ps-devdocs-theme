@@ -333,6 +333,10 @@ a.cta {
   &:hover {
     text-decoration: none;
   }
+
+  &.cta-banner {
+    margin-top: 20px;
+  }
 }
 
 .h-version-titles th:not(:first-child) {
