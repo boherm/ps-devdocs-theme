@@ -35,8 +35,8 @@
     {{- else }}
         <div class="notices info">
             <p>
-                <strong>Warning:</strong> You are browsing the documentation for {{ .FirstSection.Params.menuTitle }}, 
-                which is outdated.
+                <strong>Warning:</strong> You are browsing the documentation for {{ .FirstSection.Params.menuTitle }}, which is outdated. 
+                <a href="{{ printf "/%s/%s" .Site.Params.versions.current "basics/keeping-up-to-date/upgrade" }}">Learn how to upgrade to the latest version.</a>
             </p>
             <p>
                 {{- if $.Params.canonicalUrl }}
