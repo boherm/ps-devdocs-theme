@@ -20,6 +20,10 @@
             {{ end }}
         ];
 
+        let customFacetFilter = 'version:{{ $currentSection }}';
+
+        let showVersionNumber = false;
+
         docsearch({
             appId: '{{ .Site.Params.docSearch.appId }}',
             apiKey: '{{ .Site.Params.docSearch.apiKey }}',
@@ -27,25 +31,87 @@
             placeholder: 'Search DevDocs',
             searchParameters: {
                 facetFilters: [
-                'version:{{ $currentSection }}'
+                    customFacetFilter
                 ],
             },
             container: '#docsearch-container',
-            transformSearchClient: function(searchClient){
+            transformSearchClient: (searchClient) => {
                 return {
                     ...searchClient,
                     search: alterSearch(searchClient.search)
                 };
-            }
+            },
+            getMissingResultsUrl: ({ query }) => {
+                return "{{ .Site.Params.ghRepoURL }}issues/new?title=Missing+documentation+for+topic+" + query;
+            },
+            transformItems(items) {                
+                return items.map((item) => {
+                    if(showVersionNumber){
+                        const url = item.url;
+                        console.log(url);
+                        console.log("{{ .Site.Params.DocsUrl }}");
+                        console.log(url.replace("{{ .Site.Params.DocsUrl }}", ""));
+                        const version = url.replace("{{ .Site.Params.DocsUrl }}", "").split("/")[0];
+                        const versionPill = '<span class="version-pill">' + version + '</span>';
+                        if(item._snippetResult.content){
+                            item._snippetResult.content.value = versionPill + item._snippetResult.content.value;
+                        }
+                        else if(item._snippetResult.hierarchy){
+                            if(!item._snippetResult.hierarchy.lvl0){
+                                item._snippetResult.hierarchy.lvl0 = {
+                                    value : versionPill
+                                };
+                            } else {
+                                item._snippetResult.hierarchy.lvl0.value = versionPill + item._snippetResult.hierarchy.lvl0.value;
+                            }
+                            if(item._snippetResult.hierarchy.lvl1){
+                                item._snippetResult.hierarchy.lvl1.value = versionPill + item._snippetResult.hierarchy.lvl1.value;
+                            }
+                        }
+                    }
+                    return item;
+                });
+            },
         });
+
 
         function alterSearch(func) {
             return function (...args) {
                 const that = this;
-                return new Promise((resolve, reject) => {
+
+                return new Promise(async (resolve, reject) => {
+
+                    const interceptedResolveFunction = (response) => {
+                        
+                        let otherVersionAlert = document.getElementById("DocSearch-otherVersionAlert");
+                        if(otherVersionAlert){
+                            otherVersionAlert.remove();
+                        }
+                        
+                        const [interceptedResults] = response.results;
+                        if(interceptedResults.nbHits>0){
+                            showVersionNumber = false;
+                            resolve(response);
+                            return;
+                        }
+
+                        showVersionNumber = true;
+
+                        otherVersionAlert = document.createElement("div");
+                        otherVersionAlert.innerHTML = "Results found in other versions of the documentation:";
+                        otherVersionAlert.id = "DocSearch-otherVersionAlert";
+                        document.getElementsByClassName("DocSearch-Dropdown")[0].before(otherVersionAlert);
                     
-                    Promise.resolve(func.apply(that, args)).then(resolve).catch(reject);
-                    
+                        // remove facetFilters
+                        const [searchQuery] = args;
+                        searchQuery[0].params.facetFilters = [];
+
+                        // restart query without facets
+                        Promise.resolve(func.apply(that, [searchQuery])).then(resolve).catch(reject);
+                    };
+
+                    Promise.resolve(func.apply(that, args)).then(interceptedResolveFunction).catch(reject);
+
                     const input = document.getElementById("docsearch-input");
                     let dropdownContainer = document.getElementsByClassName("DocSearch-Dropdown")[0];
                     
@@ -90,7 +156,7 @@
             };
         }
 
-        const matchQueryWithDynamicHookName = function(search, hookName){
+        const matchQueryWithDynamicHookName = (search, hookName) => {
             const regex = new RegExp("\<(.*)\>", 'i');
             const regexedHookName = hookName.replace(regex, "(.*)");
             if(regexedHookName != hookName){
@@ -100,7 +166,7 @@
             return false;
         }
 
-        function matchHooks(query){
+        const matchHooks = (query) => {
             if(query.substring(0, 4).toLowerCase() == "hook"){
                 query = query.substring(4);
             }
