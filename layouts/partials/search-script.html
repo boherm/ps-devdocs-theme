@@ -48,9 +48,6 @@
                 return items.map((item) => {
                     if(showVersionNumber){
                         const url = item.url;
-                        console.log(url);
-                        console.log("{{ .Site.Params.DocsUrl }}");
-                        console.log(url.replace("{{ .Site.Params.DocsUrl }}", ""));
                         const version = url.replace("{{ .Site.Params.DocsUrl }}", "").split("/")[0];
                         const versionPill = '<span class="version-pill">' + version + '</span>';
                         if(item._snippetResult.content){
