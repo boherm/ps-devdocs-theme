@@ -35,8 +35,7 @@
     {{- else }}
         <div class="notices info">
             <p>
-                <strong>Warning:</strong> You are browsing the documentation for {{ .FirstSection.Params.menuTitle }}, 
-                which is outdated.
+                <strong>Warning:</strong> You are browsing the documentation for {{ .FirstSection.Params.menuTitle }}, which is outdated. 
             </p>
             <p>
                 {{- if $.Params.canonicalUrl }}
@@ -57,6 +56,11 @@
                         {{ $currentVersionPage.Params.menuTitle }}
                     </a>
                 {{- end }}
+            </p>
+            <p>
+                <a href="{{ .Site.Params.currentUpgradeGuideURL }}" class="cta cta-banner cta-secondary">
+                    Learn how to upgrade to the latest version.
+                </a>
             </p>
         </div>
     {{- end -}}
