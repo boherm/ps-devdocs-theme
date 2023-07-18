@@ -22,13 +22,20 @@
             </p>
             <p>
                 {{- if $.Params.canonicalUrl }}
-                    You might want to read <a href="{{ $.Params.canonicalUrl }}">the documentation for the current version</a>,
-                    {{ $currentVersionPage.Params.menuTitle }}.
+                    You might want to read the documentation for the current version, {{ $currentVersionPage.Params.menuTitle }}.
+                    <a href="{{ $.Params.canonicalUrl }}" class="cta cta-banner cta-primary">
+                        Read the current version of this page
+                    </a>
                 {{- else if ne $canonicalPage "" }}
-                    You might want to read <a href="{{ $canonicalPage.RelPermalink }}">the documentation for the current version</a>,
-                    {{ $currentVersionPage.Params.menuTitle }}.
+                    You might want to read the documentation for the current version, {{ $currentVersionPage.Params.menuTitle }}.
+                    <a href="{{ $canonicalPage.RelPermalink }}" class="cta cta-banner cta-primary">
+                        Read the current version of this page
+                    </a>
                 {{- else }}
-                    You might want to look at the current version, <a href="{{ $currentVersionPage.RelPermalink }}">{{ $currentVersionPage.Params.menuTitle }}</a>.
+                    You might want to look at the current version, {{ $currentVersionPage.Params.menuTitle }}.
+                    <a href="{{ $currentVersionPage.RelPermalink }}" class="cta cta-banner cta-primary">
+                        Read the current version of the documentation
+                    </a>
                 {{- end }}
             </p>
         </div>
@@ -39,21 +46,19 @@
             </p>
             <p>
                 {{- if $.Params.canonicalUrl }}
-                    You might want to read an updated version of this page for the current version,
-                    {{ $currentVersionPage.Params.menuTitle }}.
+                    You might want to read an updated version of this page for the current version, {{ $currentVersionPage.Params.menuTitle }}.
                     <a href="{{ $.Params.canonicalUrl }}" class="cta cta-banner cta-primary">
                         Read the updated version of this page
                     </a>
                 {{- else if ne $canonicalPage "" }}
-                    You might want to read an updated version of this page for the current version,
-                    {{ $currentVersionPage.Params.menuTitle }}.
+                    You might want to read an updated version of this page for the current version, {{ $currentVersionPage.Params.menuTitle }}.
                     <a href="{{ $canonicalPage.RelPermalink }}" class="cta cta-banner cta-primary">
                         Read the updated version of this page
                     </a>
                 {{- else }}
-                    You might want to look at the current version:
+                    You might want to look at the current version, {{ $currentVersionPage.Params.menuTitle }}.
                     <a href="{{ $currentVersionPage.RelPermalink }}" class="cta cta-banner cta-primary">
-                        {{ $currentVersionPage.Params.menuTitle }}
+                        Read the updated version of the documentation
                     </a>
                 {{- end }}
             </p>
