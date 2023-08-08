@@ -1,0 +1,5 @@
+{{- $remote_url := (.Get 0) -}}
+{{- $remote_data := getJSON $remote_url -}}
+{{- with $remote_data -}}
+    {{ $remote_data.content | base64Decode | safeHTML }}
+{{- end -}}
