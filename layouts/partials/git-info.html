@@ -1,88 +1,29 @@
-    {{ if .GitInfo }}
-        <div>
-            Last updated on {{ .Lastmod.Format "January 2, 2006" }}
-            {{ with .GitInfo }}:
-                <a href="{{ $.Site.Params.ghCommitURL }}{{ .Hash }}">"{{ .Subject }}" ({{ .AbbreviatedHash }})</a>
-            {{ end }}
-        </div>
-    {{ else }}
-        {{ if .Site.Params.enableCustomGitInfo }}
-            {{ if and (or .IsPage .IsSection) .Site.Params.editURL }}
-                {{- $ghPath := replace .File.Dir "\\" "/" }}
-                {{ if and
-                    .Site.Params.versions.current
-                    .FirstSection.Params.versionGithubPath
-                }}
-                    {{- $pagePathParts := (split (replace .File.Dir "\\" "/") "/") }}
-                    {{- $basePath := delimit (after 1 $pagePathParts) "/" }}
-                    {{- $ghPath = printf "%s/%s" .FirstSection.Params.versionGithubpath $basePath }}
-                    <h5 class="footerHeading">Help and support</h5>
-                    <div class="improvedFooter">
+{{ if .GitInfo }}
+    Last updated on {{ .Lastmod.Format "January 2, 2006" }}
+    {{ with .GitInfo }}:
+        <a href="{{ $.Site.Params.ghCommitURL }}{{ .Hash }}">"{{ .Subject }}" ({{ .AbbreviatedHash }})</a>
+    {{ end }}
+{{ else if .Site.Params.enableCustomGitInfo }}
+    {{/*
+        Hugo does not handle git submodules properly for GitInfo.
+        https://github.com/gohugoio/hugo/issues/5533
+        As a very inefective workaround, we parse the Github API to get the last commit of the Page
+    */}}
+    {{- $token := default "" (getenv "DEVDOCS_GITHUB_READ_TOKEN") }}
+    {{- if ( $token | len ) | eq 0 }}
+        {{- warnf "Unable to retrieve git info because the environment variable DEVDOCS_GITHUB_READ_TOKEN was not set. To disable git info, set enableCustomGitInfo to false." }}
+    {{- else }}
+        {{- $pagePathParts := (split (replace .File.Dir "\\" "/") "/") }}
+        {{- $basePath := delimit (after 1 $pagePathParts) "/" }}
+        {{- $githubApiUrl := printf
+            "%s?path=%s&sha=%s&page=1&per_page=1"
+            .Site.Params.ghApiCommitURL $basePath
+            .FirstSection.Params.versionGithubpath
+        }}
+        {{- $bearer := printf "BEARER %s" $token }}
 
-                        <div class="contribute">
-                            <h6>Help us make these docs great!</h6>
-
-                            <p>
-                                All PrestaShop Developer Documentation are open source.  See something that's wrong or unclear? Submit a pull request.
-                            </p>
-
-                            <a class="github-link" 
-                                title='{{T "Improve-this-page"}}' 
-                                href="{{ .Site.Params.editURL }}{{ $ghPath }}{{ .File.LogicalName }}" 
-                                target="blank"
-                            >
-                                <i class="fa fa-github"></i>
-                                <span id="top-github-link-text">
-                                    {{T "Improve-this-page"}}
-                                </span>
-                            </a>
-
-                            <br>
-
-                            <a class="how-to-improve" href="{{ .Site.Params.howToContributeURL }}">
-                                <span>
-                                    Learn how to contribute
-                                </span>
-                            </a>
-                        </div>
-
-                        <div class="support">
-                            <h6>Still need help ?</h6>
-
-                            <a href="https://www.prestashop-project.org/slack/">
-                                <i class="fa fa-slack"></i> Join the PrestaShop Project’s Slack Chat
-                            </a>
-                            <a href="https://github.com/PrestaShop/PrestaShop/discussions">
-                                <i class="fa fa-github"></i> Join us on Github Discussions
-                            </a>                            
-                            <a href="https://www.prestashop-project.org/support/">
-                                <i class="fa fa-question-circle"></i> Find support on prestashop-project.org
-                            </a>
-                            <a href="https://build.prestashop-project.org/">
-                                <i class="fa fa-newspaper-o"></i> Discover our developer's blog
-                            </a>
-                        </div>
-                    </div>
-                    <div class="licenceFooter">
-                        {{/* 
-                            Hugo does not handle git submodules properly for GitInfo.
-                            https://github.com/gohugoio/hugo/issues/5533
-                            As a very inefective workaround, we parse the Github API to get the last commit of the Page
-                        */}}
-                                
-                        {{ $githubApiUrl := printf 
-                            "%s?path=%s&sha=%s&page=1&per_page=1" 
-                            .Site.Params.ghApiCommitURL $basePath 
-                            .FirstSection.Params.versionGithubpath 
-                        }}
-                                
-                        {{ $bearer := printf "BEARER %s" (getenv "DEVDOCS_GITHUB_READ_TOKEN") }}
-                        {{ range getJSON $githubApiUrl (dict "Authorization" $bearer) }}
-                        Last update on <a href="{{ .html_url }}">{{ substr .commit.author.date 0 10 }} by {{ .commit.author.name }}</a>.<br>
-                        This article is licensed under the <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
-                        {{ end }}
-                    </div>
-                {{ end }}
-            {{ end }}
+        {{ range getJSON $githubApiUrl (dict "Authorization" $bearer) }}
+            Last update on <a href="{{ .html_url }}">{{ substr .commit.author.date 0 10 }} by {{ .commit.author.name }}</a>.<br>
         {{ end }}
     {{ end }}
+{{ end }}
