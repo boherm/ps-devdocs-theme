@@ -1,0 +1,61 @@
+{{ if and
+    (or .IsPage .IsSection)
+    .Site.Params.editURL
+    .Site.Params.versions.current
+    .FirstSection.Params.versionGithubPath
+}}
+    {{- $pagePathParts := (split (replace .File.Dir "\\" "/") "/") }}
+    {{- $basePath := delimit (after 1 $pagePathParts) "/" }}
+    {{- $ghPath := printf "%s/%s" .FirstSection.Params.versionGithubpath $basePath }}
+    <h5 class="footerHeading">Help and support</h5>
+    <div class="improvedFooter">
+
+        <div class="contribute">
+            <h6>Help make these docs great!</h6>
+
+            <p>
+                The PrestaShop Developer Documentation is open source. <br>See something wrong or unclear? Submit a pull request.
+            </p>
+
+            <a class="github-link"
+                title='{{T "Improve-this-page"}}'
+                href="{{ .Site.Params.editURL }}{{ $ghPath }}{{ .File.LogicalName }}"
+                target="blank"
+            >
+                <i class="fa fa-github"></i>
+                <span id="top-github-link-text">
+                    {{T "Improve-this-page"}}
+                </span>
+            </a>
+
+            <br>
+
+            <a class="how-to-improve" href="{{ .Site.Params.howToContributeURL }}">
+                <span>
+                    Learn how to contribute
+                </span>
+            </a>
+        </div>
+
+        <div class="support">
+            <h6>Still need help?</h6>
+
+            <a href="https://www.prestashop-project.org/slack/">
+                <i class="fa fa-slack"></i> Join the PrestaShop Project’s Slack Chat
+            </a>
+            <a href="https://github.com/PrestaShop/PrestaShop/discussions">
+                <i class="fa fa-github"></i> Join us on Github Discussions
+            </a>
+            <a href="https://www.prestashop-project.org/support/">
+                <i class="fa fa-question-circle"></i> Find support on prestashop-project.org
+            </a>
+            <a href="https://build.prestashop-project.org/">
+                <i class="fa fa-newspaper-o"></i> Discover our developer's blog
+            </a>
+        </div>
+    </div>
+    <div class="licenceFooter">
+        {{ partial "git-info.html" . }}
+        This article is licensed under the <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+    </div>
+{{ end }}
