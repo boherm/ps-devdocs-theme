@@ -1,0 +1,33 @@
+# Hook {{ $.Page.Param "Title" }}
+
+## Informations
+
+<div class="notices note">
+    <strong>{{ $.Page.Param "hookTitle" }}</strong>
+    {{ $.Page.Param "description" }}
+</div>
+
+| Hook | {{ $.Page.Param "Title" }} |
+| --- | --- |
+| Locations | {{ $.Page.Param "locations" }} |
+| Type | {{ $.Page.Param "type" }} |
+| Origin | {{ $.Page.Param "origin" }} |
+| Aliases | {{ $.Page.Param "hookAliases" }} |
+
+{{ if $.Page.Param "array_return" }}
+This hook has an `$array_return` parameter set to `true` (module output will be set by name in an array, [see explaination here](/8/development/components/hook/dispatching-hook)).
+{{ end }}
+
+{{ if $.Page.Param "check_exceptions" }}
+This hook has a `$check_exceptions` parameter set to `false` (check permission exceptions, [see explaination here](/8/development/components/hook/dispatching-hook)).
+{{ end }}
+
+{{ if $.Page.Param "chain" }}
+This hook has a `$chain` parameter set to `true` (hook will chain the return of hook module, [see explaination here](/8/development/components/hook/dispatching-hook)).
+{{ end }}
+
+## Located in
+
+| Origin | File |
+| --- | --- |
+{{ range $.Page.Param "files" }}{{ if ne .theme nil }}| {{ .theme }} | [{{ .file }}]({{ .url }}) |{{ else if ne .module nil }}| {{ .module }} | [{{ .file }}]({{ .url }}) |{{ else }}| core | [{{ .file }}]({{ .url }}) |{{ end }}{{ end }}
