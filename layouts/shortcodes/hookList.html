@@ -1,10 +1,10 @@
 <table>
     <thead>
         <tr>
+            <th>Locations</th>
+            <th>Example</th>
             <th>Name</th>
             <th>Aliases</th>
-            <th>Locations</th>
-            <th>Has example</th>
             <th style="display:none">Title</th>
             <th style="display:none">Located in</th>
         </tr>
@@ -12,13 +12,6 @@
     <tbody id="hooks">
         {{ range $.Page.Pages }}
         <tr>
-            <td><a href="{{ .RelPermalink }}" class="hookTitle">{{.Title}}</a></td>
-            <td>
-                {{ $aliases := .Param "hookAliases" }}
-                {{ if ne nil $aliases }}
-                    {{ delimit $aliases ", " }}
-                {{ end }}
-            </td>
             <td>
                 {{ range .Param "locations" }}
                     {{ if eq "back office" . }}
@@ -34,6 +27,14 @@
                     ✅
                 {{ end }}
             </td>
+            <td><a href="{{ .RelPermalink }}" class="hookTitle">{{.Title}}</a></td>
+            <td>
+                {{ $aliases := .Param "hookAliases" }}
+                {{ if ne nil $aliases }}
+                    {{ delimit $aliases ", " }}
+                {{ end }}
+            </td>
+            
             <td style="display:none">{{.Param "hookTitle"}}</td>
             <td style="display:none">{{.Param "files"}}</td>
             
