@@ -2,14 +2,16 @@
 
 ## Informations
 
+{{ if and (ne ($.Page.Param "hookTitle") nil) (ne ($.Page.Param "description") nil) }}
 <div class="notices note">
     <strong>{{ $.Page.Param "hookTitle" }}</strong>
     {{ $.Page.Param "description" }}
 </div>
+{{ end }}
 
 | Hook | {{ $.Page.Param "Title" }} |
 | --- | --- |
-| Locations | {{ $.Page.Param "locations" }} |
+| Locations | {{ range $.Page.Param "locations" }}{{ if eq "back office" . }}<div class="pill-bo">BO</div> {{ end }}{{ if eq "front office" . }}<div class="pill-fo">FO</div> {{ end }}{{ end }} |
 | Type | {{ $.Page.Param "type" }} |
 | Origin | {{ $.Page.Param "origin" }} |
 | Aliases | {{ $.Page.Param "hookAliases" }} |
