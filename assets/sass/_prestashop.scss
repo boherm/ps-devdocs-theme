@@ -403,23 +403,9 @@ div#DocSearch-otherVersionAlert {
     align-items: center;
     font-family: Prestafont, sans-serif;
     font-size: 5em;
-
-    &:before {
-      z-index: -1;
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -200%;
-      right: -200%;
-      height: 150%;
-      background: #A4DBE8;
-    }
-
   }
 
-  &.bg-green {
-    > h1, > h1:before {
-      background: #BDE9C9;
-    }
+  &.bg-green > h1 {
+    background: #BDE9C9;
   }
 }
