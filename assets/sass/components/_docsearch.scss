@@ -1,7 +1,7 @@
 #docsearch-container {
   margin-top: 1rem;
   position: relative;
-  --docsearch-text-color: #fda1a1;
+  --docsearch-text-color: #333;
   --docsearch-searchbox-shadow: inset 0 0 5px 0 $primaryColor;
 
   .DocSearch-Button {
@@ -10,12 +10,9 @@
     color: rgba(255, 255, 255, 0.6);
     margin: 0;
     width: 100%;
-    background: #840e5f;
+    background: #000;
+    border: 1px solid #333;
     height: 34px;
-
-    &:focus {
-      background: #840e5f;
-    }
 
     .DocSearch-Search-Icon {
       width: 13px;
