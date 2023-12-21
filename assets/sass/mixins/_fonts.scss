@@ -23,3 +23,9 @@
   url($fontPath + "Work_Sans_500.svg#WorkSans") format("svg"),
   url($fontPath + "Work_Sans_500.ttf") format("truetype");
 }
+
+@font-face {
+  font-family: Prestafont;
+  font-weight: 400;
+  src: url("fonts/Prestafont-Regular.woff2") format("woff2");
+}

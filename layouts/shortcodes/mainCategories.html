@@ -9,9 +9,7 @@
             <div class="mainCategoryHeading">
                 <div class="indexCategory">
                     {{ if .Param "icon" }}
-                        <i class="fa {{ .Param "icon" }}"></i>
-                    {{ else}}
-                        <i class="fa fa-star"></i>
+                        <img src="{{ .Param "icon" }}" alt="{{ .Title }}" />
                     {{ end}}
                 </div>
 
@@ -44,14 +42,13 @@
                 {{ end }}
             </ul>
             <a href="{{ .RelPermalink }}" class="explore-all">
-                <i class="fa fa-arrow-right"></i> 
-                All 
+                All
                 {{ if .Param "menuTitle" }}
                     {{ .Param "menuTitle" }} 
                 {{ else }}
                     {{ .Title }} 
                 {{ end }}
-                topics
+                topics <small>►</small>
             </a>
         </div>
         {{ end }}

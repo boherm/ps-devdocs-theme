@@ -53,7 +53,6 @@ a:hover {
     background: $menuHeaderBgColor;
     color: $menuSearchBoxColor;
     border-color: $menuHeaderBgColor;
-    background: linear-gradient(#411452, #840e5f);
   }
   .searchbox-extended {
     border-color: $menuSearchBoxColor;
@@ -96,16 +95,6 @@ a:hover {
 #header a {
   color: #fff;
   font-size: 18px;
-}
-
-#logo::before {
-  content: '';
-  width: 40px;
-  height: 40px;
-  background: url(/images/preston-logo@2x.png) center / 40px no-repeat;
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 10px;
 }
 
 .function-definition {
@@ -198,16 +187,24 @@ div.mainCategories {
     flex-basis: 23%;
 
     div.indexCategory {
-      color: #e693b9;
+      color: $mainLinkColor;
       font-size: 36px;
+
+      a {
+        margin: 0;
+
+        img {
+          margin: .4em auto 0!important;
+          width: 50px!important;
+          height: 50px!important;
+        }
+      }
     }
 
     div.mainCategoryHeading {
       padding-bottom: 10px;
-      border-bottom: 3px solid #EEEEEE;
       font-size : 24px;
       font-weight: 600;
-      font-family: "Work Sans","Helvetica","Arial",sans-serif;
       margin-bottom: 15px;
     }
 
@@ -222,21 +219,51 @@ div.mainCategories {
     }
 
     a.explore-all {
-      color: #e693b9;
+      color: #000;
       margin-bottom: 30px;
+      border: 1px solid #000;
+      padding: 7px 10px;
+      text-transform: uppercase;
+      font-size: .75em;
+      transition: color .2s ease, background .2s ease;
+
+      small {
+        padding-left: 3px;
+      }
+
+      &:hover {
+        background: #000;
+        color: #fff;
+
+        &:after {
+          display: none!important;
+        }
+      }
+
+      &:after {
+        content: '>';
+      }
     }
   }
 }
 
 div.mostViewedPagesIcon {
-  color: #e693b9;
+  color: $mainLinkColor;
   font-size: 36px;
-  margin-top: 20px;
+
+  a {
+    margin: 0;
+    img {
+      margin-bottom: 0!important;
+      width: 50px!important;
+      height: 50px!important;
+    }
+  }
 }
 h3.mostViewedPagesHeading {
   margin-top: 0px;
   padding-bottom: 10px;
-  border-bottom: 3px solid #EEEEEE;
+  color: #000;
 }
 
 div.mostViewedPages {
@@ -280,17 +307,17 @@ div.improvedFooter {
     }
 
     a.github-link {
-      border: 1px solid #df0067;
+      border: 1px solid $mainLinkColor;
       padding : 15px 30px;
       border-radius: 10px;
       margin: 10px 0px;
-      color: #df0067;
+      color: $mainLinkColor;
       font-size: 14px;
       background-color: #FDFDFD;
     }
 
     a {
-      color: #df0067;
+      color: $mainLinkColor;
       font-size: 14px;
     }
 
@@ -315,18 +342,18 @@ div.improvedFooter {
 }
 
 a.cta {
-  border: 1px solid #df0067;
+  border: 1px solid $mainLinkColor;
   padding : 15px 30px;
   border-radius: 10px;
   margin: 10px 0px;
-  color: #df0067;
+  color: $mainLinkColor;
   font-size: 14px;
   background-color: #FFFFFF;
   width: 100%;
   text-align: center;
 
   &.cta-primary {
-    background-color: #df0067;
+    background-color: $mainLinkColor;
     color: #FFFFFF;
   }
 
@@ -361,4 +388,38 @@ div#DocSearch-otherVersionAlert {
   padding : 20px;
   padding-bottom: 0px;
   color: #df0067;
+}
+
+#home {
+  > h1 {
+    position: relative;
+    background: #A4DBE8;
+    border: 0;
+    margin: 10px -16px 20px;
+    text-align: left;
+    padding: 20px;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    font-family: Prestafont, sans-serif;
+    font-size: 5em;
+
+    &:before {
+      z-index: -1;
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -200%;
+      right: -200%;
+      height: 150%;
+      background: #A4DBE8;
+    }
+
+  }
+
+  &.bg-green {
+    > h1, > h1:before {
+      background: #BDE9C9;
+    }
+  }
 }
