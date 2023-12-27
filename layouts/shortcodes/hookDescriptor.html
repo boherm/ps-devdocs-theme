@@ -30,6 +30,21 @@ This hook has a `$chain` parameter set to `true` (hook will chain the return of 
 
 ## Located in
 
-| Origin | File |
-| --- | --- |
-{{ range $.Page.Param "files" }}{{ if ne .theme nil }}| {{ .theme }} | [{{ .file }}]({{ .url }}) |{{ else if ne .module nil }}| {{ .module }} | [{{ .file }}]({{ .url }}) |{{ else }}| core | [{{ .file }}]({{ .url }}) |{{ end }}{{ end }}
+<table>
+<tr>
+<th>Origin</th>
+<th>File</th>
+</tr>
+{{ range $.Page.Param "files" }}
+<tr>
+{{ if ne .theme nil }}
+<td>{{ .theme }}</td>
+{{ else if ne .module nil }}
+<td>{{ .module }}</td>
+{{ else }}
+<td>core</td>
+{{ end }}
+<td><a href={{.url}}>{{.file}}</a></td>
+</tr>
+{{ end }}
+</table>
