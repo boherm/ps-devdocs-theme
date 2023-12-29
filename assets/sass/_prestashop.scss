@@ -165,17 +165,17 @@ div.search-tags {
 }
 
 h1 {
-  word-break: break-word; 
+  word-break: break-word;
 }
 
 .pill-bo {
-    @extend .version-pill;
-    background-color: #FF8787;
+  @extend .version-pill;
+  background-color: #FF8787;
 }
 
 .pill-fo {
-    @extend .version-pill;
-    background-color: #B1AFFF;
+  @extend .version-pill;
+  background-color: #B1AFFF;
 }
 
 div.mainCategories {
@@ -209,7 +209,7 @@ div.mainCategories {
     }
 
     a {
-      color: #222222;
+      color: #000000;
     }
 
     ul {
@@ -219,9 +219,10 @@ div.mainCategories {
     }
 
     a.explore-all {
-      color: #000;
+      color: #fff;
+      background: #000;
       margin-bottom: 30px;
-      border: 1px solid #000;
+      border: 1px solid #fff;
       padding: 7px 10px;
       text-transform: uppercase;
       font-size: .75em;
@@ -232,8 +233,9 @@ div.mainCategories {
       }
 
       &:hover {
-        background: #000;
-        color: #fff;
+        background: #fff;
+        color: #000;
+        border: 1px solid #000;
 
         &:after {
           display: none!important;
@@ -278,7 +280,7 @@ div.mostViewedPages {
     padding: 10px;
 
     a {
-      color: #222222; 
+      color: #000000;
     }
 
     &:hover {
@@ -338,7 +340,7 @@ div.improvedFooter {
       font-size: 14px;
     }
   }
-  
+
 }
 
 a.cta {
@@ -379,7 +381,7 @@ a.cta {
 }
 .example-yes, .example-no {
   display: inline-block;
-  width: 1.1rem; 
+  width: 1.1rem;
   height: 1.1rem;
   margin-bottom: -2px;
 }
